@@ -1,0 +1,9 @@
+host = "api.apixu.com";
+port = 80;
+description = "current weather";
+useSSL = false;
+authType = none;
+useProxy = true;
+proxyHost = "proxy-trial";
+proxyPort = 8080;
+timeout = 5000; // in milliseconds

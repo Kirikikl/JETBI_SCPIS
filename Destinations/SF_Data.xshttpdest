@@ -1,0 +1,9 @@
+description = "get_sf_data";
+host = "parkingcloud-dev-ed.my.salesforce.com";
+port = 443;
+pathPrefix = "";
+proxyType = none;
+authType = none;
+useSSL = true;
+timeout = 0;
+sslAuth = anonymous;

@@ -1,0 +1,8 @@
+description = "get_currencies_data";
+host = "nbrb.by";
+port = 443;
+proxyType = none;
+authType = none;
+useSSL = true;
+timeout = 0;
+sslAuth = anonymous;

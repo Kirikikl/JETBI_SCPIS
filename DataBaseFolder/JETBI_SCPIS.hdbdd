@@ -1,0 +1,393 @@
+namespace JETBI_SCPIS.DataBaseFolder;
+
+@Schema: 'JETBI_SCPIS'
+
+context JETBI_SCPIS {
+
+//***************** Types *****************//
+    type tID: String(128);
+    type tIntegrationID: String(128);
+    type tLanguage: String(1);
+    type tISOLanguage: String(5);
+    type tVersion: String(1);
+    
+    type tLatitude: Double;
+    type tLongitude: Double;    
+    type tIntFlag: Integer;
+    
+    type tYear: String(4);
+    type tMonth: String(2);
+    type tDayOfMonth: String(2);
+    type tWeek: String(2);
+    type tDayOfWeek: String(2);
+    type tQuarter: String(1);
+    type tYearMonth: String(7);
+    type tYearQuarter: String(7);
+    type tYearWeek: String(7);
+    type tDate: LocalDate; 
+    type tTime: LocalTime;
+    type tHour: String(2);
+    type tMinutes: String(2);
+    type tAmount: Decimal(15, 2);
+    type tDuration: Double;
+    type tCount: Integer;
+    type tCurrency: String(5);
+
+    type tName60: String(60);
+    type tFullName: String(255);
+    type tEmail: String(255);
+    type tDescriptoion255: String(255);
+    type tUTCDateTime: UTCDateTime;
+    type tParamName: String(128);
+    type tParamValue: String(1024);
+    type tParamType: String(16);
+    type tJobItemOrder: Integer;
+    type tRequestMethod: String(16);
+    type tTable: String(256);
+    type tField: String(256);
+    type tSchema: String(128);
+    type tFlag: String(1);
+
+//***************** Tables *****************//   
+    @Catalog.tableType: #ROW
+	entity Instances 
+	{ 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+
+        "CreatedByID": tID; 
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "ID" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "ID" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+        "Modified": tUTCDateTime;  
+    
+        "IntegrationID": tIntegrationID;
+    }
+    
+    @Catalog.tableType: #ROW
+	entity InstallationName 
+	{
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        key "Language": tLanguage default 'E';
+	    
+	    "Name": tName60;
+        "Description": tDescriptoion255;    
+
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "ID" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "ID" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+        "Modified": tUTCDateTime; 
+    
+        "IntegrationID": tIntegrationID;
+    }
+    
+    @Catalog.tableType: #ROW
+	entity Users 
+	{
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime; 
+
+        "txt": Association[1] to UsersName on "txt"."Instance" = "Instance" and "txt"."ID" = "ID" and "txt"."Version" = "Version";
+        
+        "IntegrationID": tIntegrationID;
+    } 
+    
+    @Catalog.tableType: #ROW
+	entity UsersName 
+	{
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        key "Language": tLanguage default 'E';
+	    
+	    "Name": tName60;
+        "Description": tDescriptoion255;    
+
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime;
+    	
+        "IntegrationID": tIntegrationID;
+    }
+    
+    @Catalog.tableType: #ROW
+    entity SourceSystemTypes
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime;
+    
+        "txt": Association[1] to SourceSystemTypesName on "txt"."Instance" = "Instance" and "txt"."ID" = "ID" and "txt"."Version" = "Version";
+        
+        "IntegrationID": tIntegrationID;
+    };
+        
+    @Catalog.tableType: #ROW
+    entity SourceSystemTypesName
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        key "Language": tLanguage default 'E'; 
+        
+        "Name": tName60;
+        "Description": tDescriptoion255;
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime; 
+    
+        "IntegrationID": tIntegrationID;
+    };
+        
+    @Catalog.tableType: #ROW
+    entity SourceSystems 
+    {
+        key "Instance": tID;  
+        key "ID": tID; 
+        key "Version": tVersion default 'A';
+        
+        "SourceSystemTypeID": tID; 
+        "SourceSystemType": Association[1] to SourceSystemTypes on "SourceSystemType"."Instance" = "Instance" and  "SourceSystemType"."ID" = "SourceSystemTypeID" and "SourceSystemType"."Version" = "Version";
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime; 
+    
+        "txt": Association[1] to SourceSystemsName on "txt"."Instance" = "Instance" and "txt"."ID" = "ID" and "txt"."Version" = "Version";
+        
+        "IntegrationID": tIntegrationID;
+    };
+    
+    @Catalog.tableType: #ROW
+    entity SourceSystemsName
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        key "Language": tLanguage default 'E'; 
+        
+        "Name": tName60;
+        "Description": tDescriptoion255;
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime;
+    
+        "IntegrationID": tIntegrationID;
+    };
+        
+    @Catalog.tableType: #ROW
+    entity SourceSystemDestinations 
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        
+        "SourceSystemID": tID; 
+        "SourceSystem": Association[1] to SourceSystems on "SourceSystem"."Instance" = "Instance" and  "SourceSystem"."ID" = "SourceSystemID" and "SourceSystem"."Version" = "Version";
+        "DestinationName": tName60;
+        "ParamName": tParamName;
+        "ParamValue": tParamValue;
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime;
+    
+        "IntegrationID": tIntegrationID;
+    };
+        
+    @Catalog.tableType: #ROW
+    entity Jobs 
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime; 
+    
+        "txt": Association[1] to JobsName on "txt"."Instance" = "Instance" and "txt"."ID" = "ID" and "txt"."Version" = "Version";
+    
+        "IntegrationID": tIntegrationID;
+    };
+    
+    @Catalog.tableType: #ROW
+    entity JobsName 
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        key "Language": tLanguage default 'E'; 
+        
+        "Name": tName60;
+        "Description": tDescriptoion255;
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime;
+    
+        "IntegrationID": tIntegrationID;
+    };
+        
+    @Catalog.tableType: #ROW
+    entity JobItems 
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        
+        "JobID": tID;    
+        "Job": Association[1] to Jobs on "Job"."Instance" = "Instance" and  "Job"."ID" = "JobID" and "Job"."Version" = "Version";
+        "SourceSystemID": tID; 
+        "SourceSystem": Association[1] to SourceSystems on "SourceSystem"."Instance" = "Instance" and  "SourceSystem"."ID" = "SourceSystemID" and "SourceSystem"."Version" = "Version";
+        "JobItemOrder": tJobItemOrder;
+        "fRecreateTable": tFlag;
+        "fRemoveDataBeforLoading": tFlag;
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime; 
+        
+        "txt": Association[1] to JobsItemsName on "txt"."Instance" = "Instance" and "txt"."ID" = "ID" and "txt"."Version" = "Version";
+        
+        "IntegrationID": tIntegrationID;
+    };
+    
+    @Catalog.tableType: #ROW
+    entity JobsItemsName 
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        key "Language": tLanguage default 'E'; 
+        
+        "Name": tName60;
+        "Description": tDescriptoion255;
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime; 
+    
+        "IntegrationID": tIntegrationID;
+    };
+        
+    @Catalog.tableType: #ROW
+    entity JobItemRequests 
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        
+        "JobItemID": tID;    
+        "JobItem": Association[1] to JobItems on "JobItem"."Instance" = "Instance" and  "JobItem"."ID" = "JobItemID" and "JobItem"."Version" = "Version";    
+        "ParamName": tParamName;
+        "ParamValue": tParamValue;
+        "RequestMethod": tRequestMethod;
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime;
+    
+        "IntegrationID": tIntegrationID;
+    };
+        
+    @Catalog.tableType: #ROW
+    entity JobItemRequestParams 
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+        
+        "JobItemRequestID": tID;    
+        "JobItemRequest": Association[1] to JobItemRequests on "JobItemRequest"."Instance" = "Instance" and  "JobItemRequest"."ID" = "JobItemRequestID" and "JobItemRequest"."Version" = "Version";    
+        "ParamType": tParamType;
+        "ParamName": tParamName;
+        "ParamValue": tParamValue;
+        
+        "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime;
+    
+        "IntegrationID": tIntegrationID;
+    };
+        
+    @Catalog.tableType: #ROW
+    entity ConnectionsMapping 
+    {
+        key "Instance": tID; 
+        key "ID": tID;
+        key "Version": tVersion default 'A';
+            
+        "JobItemID": tID;    
+        "JobItem": Association[1] to JobItems on "JobItem"."Instance" = "Instance" and  "JobItem"."ID" = "JobItemID" and "JobItem"."Version" = "Version";    
+        "SourceTable": tTable;
+	    "SourceField": tField;
+	    "TargetSchema": tSchema;
+	    "TargetTable": tTable;
+	    "TargetField": tField; 
+	    "TargetFieldType": tField;
+	    
+	    "CreatedByID": tID;
+    	"ModifiedByID":tID;
+    	"Created by": Association[1] to Users on "Created by"."Instance" = "Instance" and  "Created by"."ID" = "CreatedByID" and "Created by"."Version" = "Version";
+    	"Created": tUTCDateTime;
+    	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
+    	"Modified": tUTCDateTime; 
+    
+        "IntegrationID": tIntegrationID;
+    };
+};
