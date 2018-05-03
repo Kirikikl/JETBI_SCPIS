@@ -1,0 +1,8 @@
+description = "get_tempo_data";
+host = "jet-bi.atlassian.net";
+port = 443;
+proxyType = none;
+authType = none;
+useSSL = true;
+timeout = 0;
+sslAuth = anonymous;

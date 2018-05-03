@@ -1,3 +1,3 @@
 var CommonFunctions = $.import('CommonFunctions.xsjslib');
 
-CommonFunctions.startJob(1);
+CommonFunctions.startJob(3);

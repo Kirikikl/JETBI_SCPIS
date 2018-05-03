@@ -2,7 +2,7 @@ namespace JETBI_SCPIS.DataBaseFolder;
 
 @Schema: 'JETBI_SCPIS'
 
-context JETBI_SCPIS {
+context JETBI_SCPIS { 
 
 //***************** Types *****************//
     type tID: String(128);
@@ -47,6 +47,7 @@ context JETBI_SCPIS {
     type tField: String(256);
     type tSchema: String(128);
     type tFlag: String(1);
+    type tLibrary: String(32);
 
 //***************** Tables *****************//   
     @Catalog.tableType: #ROW
@@ -174,6 +175,7 @@ context JETBI_SCPIS {
         
         "SourceSystemTypeID": tID; 
         "SourceSystemType": Association[1] to SourceSystemTypes on "SourceSystemType"."Instance" = "Instance" and  "SourceSystemType"."ID" = "SourceSystemTypeID" and "SourceSystemType"."Version" = "Version";
+        "Library": tLibrary;
         
         "CreatedByID": tID;
     	"ModifiedByID":tID;
@@ -267,7 +269,7 @@ context JETBI_SCPIS {
     	"Created": tUTCDateTime;
     	"Modified by": Association[1] to Users on "Modified by"."Instance" = "Instance" and  "Modified by"."ID" = "ModifiedByID" and "Modified by"."Version" = "Version";
     	"Modified": tUTCDateTime;
-    
+     
         "IntegrationID": tIntegrationID;
     };
         
@@ -380,6 +382,7 @@ context JETBI_SCPIS {
 	    "TargetTable": tTable;
 	    "TargetField": tField; 
 	    "TargetFieldType": tField;
+	    "fKey": tFlag;
 	    
 	    "CreatedByID": tID;
     	"ModifiedByID":tID;
