@@ -1,6 +1,46 @@
 var CommonFunctions = $.import('../CommonFunctions.xsjslib');
 
 
+function checkURL(RequestData, ConnectionMappingData)
+{
+    var oldURL = RequestData.ParamValue;
+    var tempURL = [];
+    tempURL = oldURL.split('##');
+    var i, j;
+    var selectQuery ="";
+    var selectTable = "";
+    var newURL ="";
+    for (i = 0; i < tempURL.length; i++)
+    {
+        switch(tempURL[i])
+        {
+            case 'FIELDS':
+                for (j = 0; j < ConnectionMappingData.length; j++)
+                {
+                    selectQuery = selectQuery + "+" + ConnectionMappingData[j].SourceField + ",";
+                }
+                selectQuery = selectQuery.substring(0, selectQuery.length - 1);
+                newURL = oldURL.replace('##FIELDS##', selectQuery);
+	            break;
+	            
+	        case 'TABLE':
+	            selectTable = "+" + ConnectionMappingData[0].SourceTable;
+	            newURL = newURL.replace('##TABLE##', selectTable);
+        }
+    }
+    RequestData.ParamValue = newURL;
+    return RequestData.ParamValue;
+}
+
+
+
+
+
+
+
+
+
+
 function getTokenData(Request, Dest, RequestData) 
 {
 	
@@ -44,30 +84,9 @@ function getData(request, dest, tokenData)
 	
 	var parse_data = JSON.parse(data);
 	
-	var tempArr = [];
-    var output_data = [];
-    var k, i, j, temp;
-    for (k = 0; k < parse_data.records.length; k++) 
-    {
-        temp = parse_data.records[k];
-        for (i in temp) {
-            if (temp.hasOwnProperty(i)) 
-            {
-                tempArr.push(temp[i]);
-            }
-        }
-        output_data[k] = tempArr;
-        output_data[k].splice(0,1);
-        /*for (j = 0; j < output_data[k].length; j++)
-        {
-            if (output_data[k][j] === null)
-            {
-                output_data[k][j] = 0;
-            }
-        }*/
-        tempArr = [];
-    }
-    return output_data;
+	parse_data = parse_data.records;
+
+    return parse_data;
 }
 
 function startProcess(conn, JobItemData)
@@ -80,6 +99,7 @@ function startProcess(conn, JobItemData)
 	var TokenData = getTokenData(TokenRequest, TokenDest, TokenRequestData);
 	var DestinationData = CommonFunctions.getDestinationData(conn, JobItemData, "SF_Data");
 	var RequestData = CommonFunctions.getRequestData(conn, JobItemData, "query");
+	checkURL(RequestData, ConnectionMappingData);
 	var Dest = CommonFunctions.createDestination(DestinationData);
 	var Request = CommonFunctions.createRequest(RequestData);
 	var Data = getData(Request, Dest, TokenData);
